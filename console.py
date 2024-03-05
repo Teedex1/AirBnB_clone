@@ -176,7 +176,7 @@ class HBNHBCommand(cmd.cmd):
                 print("** value missing **")
             else:
                 cast = None
-                if no re.search('^".*"$', value):
+                if not re.search('^".*"$', value):
                     if '.' in value:
                         cast = float
                     else:
