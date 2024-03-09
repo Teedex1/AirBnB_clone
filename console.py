@@ -9,7 +9,7 @@ import re
 import json
 
 
-class HBNHBCommand(cmd.cmd):
+class HBNBCommand(cmd.Cmd):
 
     """Class for the command interpreter."""
 
