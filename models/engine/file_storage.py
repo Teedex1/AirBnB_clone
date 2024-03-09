@@ -4,16 +4,17 @@ import datetime
 import json
 import os
 
+
 class FileStorage:
     """Class for storing and retriving data"""
     __file_path = "file.json"
     __objects = {}
 
-    def all (self):
+    def all(self):
         """returns the dictionary __objects"""
         return FileStorage.__objects
 
-    def new (self, obj):
+    def new(self, obj):
         """sets in __objects the obj with key <obj class name>.id"""
         key = "{}.{}".format(type(obj).__name__, obj.id)
         FileStorage.__objects[key] = obj
@@ -42,7 +43,7 @@ class FileStorage:
                    "Place": Place,
                    "Review": Review}
         return classes
-    
+
     def reload(self):
         """Reloads the stored objects"""
         if not os.path.isfile(FileStorage.__file_path):
@@ -50,8 +51,7 @@ class FileStorage:
         with open(FileStorage.__file_path, "r", encoding="Utf-8") as f:
             obj_dict = json.load(f)
             obj_dict = {k: self.classes()[v["__class__"]](**v)
-                    for k, v in obj_dict.items()}
-             # TODO: should this overwrite or insert?
+                        for k, v in obj_dict.items()}
             FileStorage.__objects = obj_dict
 
     def attributes(self):
@@ -88,4 +88,4 @@ class FileStorage:
                          "user_id": str,
                          "text": str}
         }
-        return attributes    
+        return attributes

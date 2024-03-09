@@ -73,10 +73,11 @@ class HBNHBCommand(cmd.cmd):
                         value = attributes[attribute](value)
                     setattr(storage.all()[key], attribute, value)
                 storage.all()[key].save()
+
     def do_EOF(self, line):
         """Handles End of File character.
         """
-        
+
         print()
         return True
 
@@ -120,6 +121,7 @@ class HBNHBCommand(cmd.cmd):
                 else:
                     del storage.all()[key]
                     storage.save()
+
     def do_all(self, line):
         """Prints all string representation of all instances.
         """
@@ -129,12 +131,12 @@ class HBNHBCommand(cmd.cmd):
                 print("** class doesn't exist **")
             else:
                 nl = [str(obj) for key, obj in storage.all().items()
-                        if type(obj).__name__ == words[0]]
+                      if type(obj).__name__ == words[0]]
                 print(nl)
         else:
             new_list = [str(obj) for key, obj in storage.all().items()]
             print(new_list)
-    
+
     def do_count(self, line):
         """Counts the instances of a class.
         """
@@ -148,7 +150,7 @@ class HBNHBCommand(cmd.cmd):
                 k for k in storage.all() if k.startswith(
                     words[0] + '.')]
             print(len(matches))
-    
+
     def do_update(self, line):
         """Updates an instance by adding or updating attribute.
         """
@@ -190,14 +192,10 @@ class HBNHBCommand(cmd.cmd):
                     try:
                         value = cast(value)
                     except ValueError:
-                        pass # fine, stay a string then
+                        pass  # fine, stay a string then
                     setattr(storage.all()[key], attribute, value)
                     storage.all()[key].save()
 
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-
-                        
-
-
