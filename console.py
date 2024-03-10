@@ -23,7 +23,7 @@ class HBNBCommand(cmd.Cmd):
     def _precmd(self, line):
         """Intercepts commands to test for class.syntax()"""
         # print("PRECMD:::", line)
-        match = re.search(r"^(\w*)\.(\w*)(?:\(([^)]*)\))$", line)
+        match = re.search(r"^(\w*)\.(\w+)(?:\(([^)]*)\))$", line)
         if not match:
             return line
         classname = match.group(1)
@@ -133,7 +133,7 @@ class HBNBCommand(cmd.Cmd):
             elif len(words) < 2:
                 print("** instance id missing **")
             else:
-                key = "().()".format(words[0], words[1])
+                key = "{}.{}".format(words[0], words[1])
                 if key not in storage.all():
                     print("** no instance found **")
                 else:
