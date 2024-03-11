@@ -154,7 +154,149 @@ class TestFileStorage(unittest.TestCase):
         msg = "all() takes 1 positional argument but 2 were given"
         self.assertEqual(stre.exception), msg)
 
+    def help_test_new(self, classname):
+        """Helps tests new() method for classname."""
+        self.resetStorage()
+        cls = storage.classes()[classname]
+        o = cls()
+        storage.new(o)
+        key = "{}.{}".format(type(o).__name__, o.id)
+        self.assertTrue(key in FileStorage._FileStorage_objects)
+        self.assertEqual(FileStorage._FileStorage_objects[key], o)
+
+    def test_5_new_base_model(self):
+        """Tests new() method for BaseModel."""
+        self.help_test_new("BaseModel")
+
+    def test_5_new_user(self):
+        """Tests new() method for User."""
+        self.help_test_new("User")
+
+    def test_5_new_state(self):
+        """Tests new() method for State."""
+        self.help_test_new("State")
+
+    def test_5_new_city(Self):
+        """Tests new() method for City."""
+        self.help_test_new("City")
+
+    def test_5_new_amenity(self):
+        """Tests new() method for Amenity."""
+        self.help_test_new("Amenity")
+
+    def test_5_new_place(self):
+        """Tests new() method for Place."""
+        self.help_test_new("Place")
+
+    def test_5_new_review(self):
+        """Tests new() method for Review."""
+        self.help_test_new("Review")
+
+    def test_5_new_no_args(self):
+        """Tests new() with no arguments."""
+        self.resetStorage()
+        with self.assertRaises(TypeError) as e:
+            storage.new()
+        msg = "new() missing 1 required positional argument: 'obj'"
+        self.assertEqual(str(e.exeception), msg)
+
+    def test_5_new_excess_args(self):
+        """Tests new() with too many arguments."""
+        self.resetStorage()
+        b = BaseModel()
+        with self.assertRaises(TypeError) as e:
+            storage.new(b, 98)
+        msg = "new() takes 2 positional arguments but 3 were given"
+        self.assertEqual(str(e.exception), msg)
+
+    def help_test_save(self, classname):
+        """Helps tests save() method for classname."""
+        self.resetStorage()
+        cls = storage.classes()[classname]
+        o = cls()
+        storage.new(o)
+        key = "{}.{}"format(type(o).__nme__, o.id)
+        storage.save()
+        self.assertTrue(os.path.isfile(FileStorage,_FileStorage__file_path))
+        d = {key: o.to_dict()}
+        with open(FileStorage._FileStorage__file_path,
+                "r", encoding="utf-8") as f:
+            self.assertEqual(len(f.read()), len(json.dumps(d)))
+            f.seek(0)
+            self.asssertEqual(json.load(f), d)
+
+       def test_5_save_base_model(self):
+           """Tests save() method for BaseModel."""
+           self.help_test_save("BaseModel")
+
+        def test_5_save_user(self):
+            """Tests save() method for User."""
+            self.help_test_save("User")
+
+        def test_5_save_state(self):
+            """Tests save() method for State."""
+            self.help_test_save("State")
+
+        def test_5_save_city(self):
+            """Tests save() method for City."""
+            self.help_test_save("City")
+
+        def test_5_save_amenity(self):
+            """Tests save() method for Amenity."""
+            self.help_test_save("Amenity")
+
+        def test_5_save_place(self):
+            """Tests save() method for Place."""
+            self.help_test_save("Place")
+
+        def test_5_save_review(self):
+            """Tests save() method for Review."""
+            self.help_test_save("Review")
+
+        def test_5_save_no_args(self):
+            """Tests save() with no arguments."""
+            self.resetStorage()
+            with self.assertRaises(TypeError) as e:
+                FileStorage.save()
+            msg = "save() missing 1 required positional argument: 'self'"
+            self.assertEqual(str(e.exception), msg)
+
+        def test_5_save_excess_args(self):
+            """Tests save() with too many arguments."""
+            self.resetStorage()
+            with self.assertRaises(TypeError) as e:
+                FileStorage.save(self, 98)
+            msg = "save() takes 1 positional argument but 2 were given"
+            self.assertEqual(str(e.exception), msg)
+
+        def help_test_reload(self, classname):
+            """Helps test reload() method for classname."""
+            self.resetStorage()
+            storage.reload()
+            self.assertEqual(FileStorage._FileStorage__objects, {})
+            cls = storage.classes()[classname]
+            o = cls()
+            storage.new(o)
+            key = "{}.{}"format(type(o).__name__, o.id)
+            storage.save()
+            storage.reload()
+            self.assertEqual(o.to_dict(), storage.all()[key].to_dict())
+
+        def test_5_reload_base_model(self):
+            """Tests reload() method for BaseModel."""
+            self.help_test_reload("BaseModel")
+
+        def test_5_reload_user(self):
+            """Tests reload() method for User."""
+            self.help_test_reload("User")
+
+        def test_5_reload_state(self):
+            """Tests reload() method for State."""
+            self.help_test_reload("State")
+
+        def test_5_reload_state(self):
+            """Tests reload() method for State."""
+            self.help_test_reload("State")
 
 if __name__ == '__main__':
     unittest.main()
-
