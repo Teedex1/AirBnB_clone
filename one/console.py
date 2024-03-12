@@ -6,7 +6,7 @@ import re
 import sys
 
 from models import *
-from moels import storage
+from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -26,11 +26,11 @@ class HBNBCommand(cmd.Cmd):
         # quit()
         return True
 
-    def d0_create(self, line):
+    def do_create(self, line):
         '''Usage: 1. create <class name> | 2. <class name>.create()
         Function: Creates an instance of the class
         '''
-        if line != "" or line is not not None:
+        if line != "" or line is not None:
             if line not in storage.classes():
                 print("** class doesn't exist **")
             else:
@@ -38,8 +38,8 @@ class HBNBCommand(cmd.Cmd):
                 obj_intance = storage.classes()[line]()
                 obj_intance.save()
                 print(obj_intance.id)
-            else:
-                print("** class name missing **")
+        else:
+            print("** class name missing **")
 
     def do_show(self, line):
         '''Usage: 1. show <class name> <id> | 2. <class name>.show(<id>)
@@ -87,7 +87,7 @@ class HBNBCommand(cmd.Cmd):
                 class_name = class_info[0]
                 instance_id = class_info[1]
                 # check if class name exists
-                if class_name instorage.classes():
+                if class_name in storage.classes():
                     # check if instance_id exists
                     key = f"{class_name}.{instnce_id}"
                     if key not in storage.all():
@@ -131,76 +131,76 @@ class HBNBCommand(cmd.Cmd):
                 4. <class name>.update(<id> <dictionary>) \
                 Function: Updates the instance of the class
                 '''
-                checks = re.search(r"^(\w+)\s([\S]+?)\s({.+?})$", line)
-                if checks:
-                    # it is a dictionary
-                    class_name = checks.group(1)
-                    instance_id = checks.group(2)
-                    update_dict = checks.group(3)
+        checks = re.search(r"^(\w+)\s([\S]+?)\s({.+?})$", line)
+        if checks:
+            # it is a dictionary
+            class_name = checks.group(1)
+            instance_id = checks.group(2)
+            update_dict = checks.group(3)
 
-                    if class_name is None:
-                        print("** class name missing **")
-                    elif instance_id is None:
-                        print("** instance id missing **")
-                    elif update_dict is None:
-                        print("** attribute name missing **")
-                    else:
-                        if class_name not in storage.classes():
-                            print("** class doesn't exist **")
-                        else:
-                            key = f"{class_name}.{instance_id}"
-                            if key not in storage.all():
-                                print("** no instance found **")
-                            else:
-                                instance_dict = storage.all()[key]
-                                update_dict = json.loads(update_dict)
-
-                                attributes = storage.attributes()[class_name]
-                                # print(attributes)
-                                for key, value in uodate_dict.items():
-                                    if key in attributes:
-                                        # print(key)
-                                        value = attributes[key](value)
-                                        # print(attributes[key])
-                                        setattr(instance_dict, key, value)
-                                        storage.save()
-
+            if class_name is None:
+                print("** class name missing **")
+            elif instance_id is None:
+                print("** instance id missing **")
+            elif update_dict is None:
+                print("** attribute name missing **")
             else:
-                # it isn't a dictionary
-                checks = re.search(
-                    r"^(\w+)\s([\S]+?)\s\"(.+?)\"\,\s\"(.+?)\"", line)
-                class_name = checks.group(1)
-                instance_id = checks.group(2)
-                attribute = checks.group(3)
-                value = checks.group(4)
-
-                if class_name is None:
-                    print("** class name missing **")
-                elif instance_id is None:
-                    print("** instance id missing **")
-                elif attribute is None:
-                    print("** attribute name missing **")
-                elif value is None:
-                    print("** value missing **")
+                if class_name not in storage.classes():
+                    print("** class doesn't exist **")
                 else:
-                    # check if class exists
-                    if class_name not in storage.classes():
-                        print("** class doesn't exist **")
+                    key = f"{class_name}.{instance_id}"
+                    if key not in storage.all():
+                        print("** no instance found **")
                     else:
-                        key = f"{class_name}.{instance_id}"
-                        if key not in storage.all():
-                            print("** no instance found **")
-                        else:
-                            instance_dict = storage.all()[key]
-                            # print(instance_dict)
-                            attribute_dict = storage.attributes()[class_name]
-                            # update_dict = storage.attributes()[class_name]
-                            # print(attributes_dict[attribute])
-                            value = attributes_dict[attribute](
-                            value) # type casting
-                            # print(attribute, value)
-                            setattr(instance_dict, attribute, value)
-                            storage.save()
+                        instance_dict = storage.all()[key]
+                        update_dict = json.loads(update_dict)
+
+                        attributes = storage.attributes()[class_name]
+                        # print(attributes)
+                        for key, value in uodate_dict.items():
+                            if key in attributes:
+                                # print(key)
+                                value = attributes[key](value)
+                                # print(attributes[key])
+                                setattr(instance_dict, key, value)
+                                storage.save()
+
+        else:
+            # it isn't a dictionary
+            checks = re.search(
+                r"^(\w+)\s([\S]+?)\s\"(.+?)\"\,\s\"(.+?)\"", line)
+            class_name = checks.group(1)
+            instance_id = checks.group(2)
+            attribute = checks.group(3)
+            value = checks.group(4)
+
+            if class_name is None:
+                print("** class name missing **")
+            elif instance_id is None:
+                print("** instance id missing **")
+            elif attribute is None:
+                print("** attribute name missing **")
+            elif value is None:
+                print("** value missing **")
+            else:
+                # check if class exists
+                if class_name not in storage.classes():
+                    print("** class doesn't exist **")
+                else:
+                    key = f"{class_name}.{instance_id}"
+                    if key not in storage.all():
+                        print("** no instance found **")
+                    else:
+                        instance_dict = storage.all()[key]
+                        # print(instance_dict)
+                        attribute_dict = storage.attributes()[class_name]
+                        # update_dict = storage.attributes()[class_name]
+                        # print(attributes_dict[attribute])
+                        value = attributes_dict[attribute](
+                        value) # type casting
+                        # print(attribute, value)
+                        setattr(instance_dict, attribute, value)
+                        storage.save()
 
     def emptyline(self):
         pass
@@ -210,7 +210,7 @@ class HBNBCommand(cmd.Cmd):
         if not sys.stdin.isatty():
             print()
 
-        checks = re,search(r"^(\w*)\.(\w+)(?:\(([^)]*\))$", line)
+        checks = re.search(r"^(\w*)\.(\w+)(?:\(([^)]*)\))$", line)
         if checks:
             class_name = checks.group(1)
             command = checks.group(2)
@@ -234,19 +234,19 @@ class HBNBCommand(cmd.Cmd):
                             {attribute_part}"
                     return ''
 
-            return cmd.Cmd.precmd(self, line):
-            # return ''
+        return cmd.Cmd.precmd(self, line)
+        # return ''
 
     def do_count(self, line):
-            '''Usage: 1. count <class name> | 2. <class name>.count()
-            Function: Counts all the instances of the class
-            '''
-            count = 0
-            for key in storage.all()keys():
-                class_name, instance_id = key.split(".")
-                if line == class_name:
-                    count += 1
-            print(count)
+        '''Usage: 1. count <class name> | 2. <class name>.count()
+        Function: Counts all the instances of the class
+        '''
+        count = 0
+        for key in storage.all().keys():
+            class_name, instance_id = key.split(".")
+            if line == class_name:
+                count += 1
+        print(count)
 
 
 if __name__ == '__main__':

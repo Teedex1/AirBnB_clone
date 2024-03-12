@@ -19,9 +19,9 @@ class FileStorage():
 
     def new(self, obj):
         '''sets in __objects the obj with key <obj class name>.id'''
-        objname = obj.__class__.name__
+        objname = obj.__class__.__name__
         objID = obj.id
-        key = f"{objname}.{objID]"  # <class name>.id = obj
+        key = f"{objname}.{objID}"  # <class name>.id = obj
         self.__objects[key] = obj
 
     def save(self):
@@ -31,7 +31,7 @@ class FileStorage():
 
         for key in self.__objects.keys():
             if type(self.__objects[key]) != dict:
-                objects_dict[key] = self.__objects[key].to_dict()
+                object_dict[key] = self.__objects[key].to_dict()
         # convert the dictionary object to json and write to the file
         file_name = self.__file_path
         with open(file_name, "w", encoding="utf-8") as jsonfile:
@@ -40,11 +40,11 @@ class FileStorage():
 
     def classes(self):
         """Return a dictionary of valid classes and their refrences."""
-        from model.base_model import BaseModel
+        from models.base_model import BaseModel
         from models.user import User
         from models.state import State
         from models.city import City
-        from models.city import Amenity
+        from models.amenity import Amenity
         from models.place import Place
         from models.review import Review
 
@@ -60,7 +60,7 @@ class FileStorage():
 
     def reload(self):
         """Reloads the stored objects"""
-        if os.path.exists(Filestorage.__file_path):
+        if os.path.exists(FileStorage.__file_path):
             # load the file and dump content as dictionary
             with open(FileStorage.__file_path, "r", encoding="utf-8") \
                     as my_file:

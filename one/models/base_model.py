@@ -28,12 +28,12 @@ class BaseModel():
                                 kwargs[key], "%Y-%m-%dT%H:%M:%S.%f")
                     # set the attributes of the instance
                     setattr(self, key, kwargs[key])
-                    # self.key = kwargs[key]
-                    # print(f"{key}: {kwargs[key]}")
+                # self.key = kwargs[key]
+                # print(f"{key}: {kwargs[key]}")
 
     def __str__(self):
         '''Returns official string representation'''
-        return (f"[{self.__class__.__name__}]({self.id}) \ 
+        return (f"[{self.__class__.__name__}] ({self.id}) \
                 {str(self.__dict__)}")
 
     def save(self):
@@ -46,9 +46,9 @@ class BaseModel():
         object_dict = {}
         for key in self.__dict__.keys():
             if key not in ('created_at', 'updated_at'):
-                object_dict[key] = self.__dict_[key]
+                object_dict[key] = self.__dict__[key]
             else:
-                objects_dict[key] = datetime.datetime.isoformat(
+                object_dict[key] = datetime.datetime.isoformat(
                         self.__dict__[key])
         object_dict['__class__'] = self.__class__.__name__
         return (object_dict)
